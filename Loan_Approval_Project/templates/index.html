@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loan Approval Prediction</title>
+
+    <!-- Connect CSS file -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>Loan Approval Prediction System</h1>
+
+    <p>Enter your details to predict your loan status.</p>
+
+    <h2>Applicant Details</h2>
+
+    <!-- Loan application form -->
+    <form action="/predict" method="POST" >
+
+        <!-- Annual Income -->
+        <label for="income">Annual Income:</label>
+        <input type="number"
+               id="income"
+               name="income"
+               min="1"
+               step="any"
+               value="{{ income if income is defined else '' }}"
+               required>
+        <br><br>
+
+        <!-- CIBIL Score -->
+        <label for="cibil">CIBIL Score:</label>
+        <input type="number"
+               id="cibil"
+               name="cibil"
+               min="300"
+               max="900"
+               value="{{ cibil if cibil is defined else '' }}"
+               required>
+        <br><br>
+
+        <!-- Account Age -->
+        <label for="age">Account Age (Years):</label>
+        <input type="number"
+               id="age"
+               name="age"
+               min="0"
+               value="{{ age if age is defined else '' }}"
+               required>
+        <br><br>
+
+        <!-- Loan Amount -->
+        <label for="amount">Loan Amount:</label>
+        <input type="number"
+               id="amount"
+               name="amount"
+               min="1"
+               step="any"
+               value="{{ amount if amount is defined else '' }}"
+               required>
+        <br><br>
+
+        <!-- Submit button -->
+        <button type="submit">Predict Loan Status</button>
+
+    </form>
+
+    <!-- Display prediction result -->
+    
+        {% if prediction %}
+            <div class="result {{ 'approved' if prediction == 'Approved' else 'rejected' }}">
+
+                {% if prediction == 'Approved' %}
+                    <h2>Loan Approved</h2>
+                    <p>Your loan application is predicted to be approved.</p>
+
+                {% else %}
+                    <h2>Loan Rejected</h2>
+                    <p>Your loan application is predicted to be rejected.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+
+</body>
+</html>
